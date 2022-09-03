@@ -1,1 +1,18 @@
+#BEE 1000
+print("Hello World!")
+
+#BEE 1001
+a = int(input())
+b = int(input())
+x = a+b
+print(f"X = {x}", end="\n")
+
+#BEE 1002
+from math import pow
+r = float(input())
+n = 3.14159
+a = n*(pow(r,2))
+print("A={0:.4f}".format(a))
+
+#BEE 1003
 
