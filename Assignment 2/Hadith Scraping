@@ -1,0 +1,65 @@
+total_chapter_lst = [97, 56, 50, 43, 46, 37, 61, 20, 16, 0, 55, 20, 1, 1, 11, 1, 22, 1, 0, 1, 7, 4, 56, 0, 0, 4, 3, 16, 1, 0]
+book_name_lst= ["bukhari", "muslim", "nasayi", "abi-dawud", "tirmidi", "ibn-majah", "muatta-malik", "riadus-saalehin", "bulugul-maram", "musnade-ahmad", "al-lulu-wal-marjan", "hadis-somvar", "silsila-sahiha", "jal-daif-hadis-serise", "mishkatul-masabih", "40-hadis", "adabul-mufrad", "juj-ul-rafaul-yadain", "juj-ul-kiraat", "sahih-hadise-kudsi", "100-mashhur-hadis", "daif-hadis-in-mishkat", "shamayele-tirmidi", "sunan-ad-darimi", "tahabi-sharif", "targib-wat-tahrib", "sahih-fajayele-amal", "upodesh", "romjaner-durbol-hadis", "darakutni"]
+url = "http://ihadis.com/books/"
+#print(len(book_name))
+for i in range(0, len(book_name_lst)):
+  book_url = url + book_name_lst[i]
+  book_name = book_name_lst[i]
+  total_chapter = total_chapter_lst[i]
+  if total_chapter== 0:
+    with open(f"{book_name}/{book_name}.txt", "w") as f:
+      f.write("None\n")
+  else:
+    #print(book_url)
+    if book_name == "al-lulu-wal-marjan":
+      for j in range(0, total_chapter):
+        chapter_url = book_url + "/chapter/" + str(j)
+        #print(chapter_url)
+        r = session.get(chapter_url)
+
+        no_pattern = "h3.hidden-print"
+        arabic_text_pattern = "p.hadith-des2"
+        bangla_text_pattern = ".hadith-des"
+        narrator_pattern = ".narrated-by"
+        hadith_status_pattern = ".label.validity"
+
+        numbers = [j.text for j in r.html.find(no_pattern)]
+        arabic_text = [j.text for j in r.html.find(arabic_text_pattern)]
+        bangla_text = [j.text for j in r.html.find(bangla_text_pattern)]
+        narrator = [j.text for j in r.html.find(narrator_pattern)]
+        hadith_status = [j.text for j in r.html.find(hadith_status_pattern)]
+        print("Chapter: ", j, len(numbers), len(arabic_text), len(bangla_text), len(narrator), len(hadith_status))
+
+        with open(f"{book_name}/{book_name}_chapter_{j}.txt", "w") as f:
+          f.write("No., Arabic Text, Bangla Text, Narrator, Hadith Status\n")
+          for n, a, b, na, hs in zip(numbers, arabic_text, bangla_text, narrator, hadith_status):
+            f.write(f"{n}, {a}, {b}, {na}, {hs}")
+            f.write('\n')
+
+    else:
+      for j in range(1, total_chapter+1):
+        chapter_url = book_url + "/chapter/" + str(j)
+       #print(chapter_url)
+        r = session.get(chapter_url)
+
+        no_pattern = "h3.hidden-print"
+        arabic_text_pattern = "p.hadith-des2"
+        bangla_text_pattern = ".hadith-des"
+        narrator_pattern = ".narrated-by"
+        hadith_status_pattern = ".label.validity"
+
+        numbers = [j.text for j in r.html.find(no_pattern)]
+        arabic_text = [j.text for j in r.html.find(arabic_text_pattern)]
+        bangla_text = [j.text for j in r.html.find(bangla_text_pattern)]
+        narrator = [j.text for j in r.html.find(narrator_pattern)]
+        hadith_status = [j.text for j in r.html.find(hadith_status_pattern)]
+        print("Chapter: ", j, len(numbers), len(arabic_text), len(bangla_text), len(narrator), len(hadith_status))
+
+        with open(f"{book_name}/{book_name}_chapter_{j}.txt", "w") as f:
+          f.write("No., Arabic Text, Bangla Text, Narrator, Hadith Status\n")
+          for n, a, b, na, hs in zip(numbers, arabic_text, bangla_text, narrator, hadith_status):
+            f.write(f"{n}, {a}, {b}, {na}, {hs}")
+            f.write('\n')
+     
+
+
